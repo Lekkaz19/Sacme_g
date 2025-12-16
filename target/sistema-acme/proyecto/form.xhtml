@@ -1,0 +1,47 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">#{empty proyectoBean.proyecto.id ? 'Nuevo Proyecto' : 'Editar Proyecto'}</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:panel header="#{empty proyectoBean.proyecto.id ? 'Nuevo Proyecto' : 'Editar Proyecto'}">
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate />
+                </p:messages>
+
+                <div class="p-fluid">
+                    <div class="p-field">
+                        <p:outputLabel for="nombre" value="Nombre" />
+                        <p:inputText id="nombre" value="#{proyectoBean.proyecto.nombre}" required="true" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="centroCostos" value="Centro de Costos" />
+                        <p:inputText id="centroCostos" value="#{proyectoBean.proyecto.centroCostos}" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="estado" value="Estado" />
+                        <p:selectOneMenu id="estado" value="#{proyectoBean.proyecto.estado}">
+                            <f:selectItem itemLabel="Activo" itemValue="Activo" />
+                            <f:selectItem itemLabel="Inactivo" itemValue="Inactivo" />
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="Guardar" action="#{proyectoBean.guardar}" update="form"
+                            icon="pi pi-save" />
+                        <p:button value="Cancelar" outcome="index" icon="pi pi-times" styleClass="ui-button-secondary" />
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

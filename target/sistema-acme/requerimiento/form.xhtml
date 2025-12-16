@@ -1,0 +1,67 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">#{empty requerimientoBean.requerimiento.id ? 'Nuevo Requerimiento' : 'Editar Requerimiento'}</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:panel header="#{empty requerimientoBean.requerimiento.id ? 'Nuevo Requerimiento' : 'Editar Requerimiento'}">
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate />
+                </p:messages>
+
+                <div class="p-fluid">
+                    <div class="p-field">
+                        <p:outputLabel for="fechaPedido" value="Fecha de Pedido" />
+                        <p:datePicker id="fechaPedido" value="#{requerimientoBean.requerimiento.fechaPedido}" required="true" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="solicitante" value="Solicitante" />
+                        <p:selectOneMenu id="solicitante" value="#{requerimientoBean.requerimiento.solicitante}" converter="usuarioConverter" required="true">
+                            <f:selectItems value="#{requerimientoBean.usuarios}" var="usuario" itemLabel="#{usuario.nombre}" itemValue="#{usuario}" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="proyecto" value="Proyecto" />
+                        <p:selectOneMenu id="proyecto" value="#{requerimientoBean.requerimiento.proyecto}" converter="proyectoConverter" required="true">
+                            <f:selectItems value="#{requerimientoBean.proyectos}" var="proyecto" itemLabel="#{proyecto.nombre}" itemValue="#{proyecto}" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="etapaProyecto" value="Etapa del Proyecto" />
+                        <p:inputText id="etapaProyecto" value="#{requerimientoBean.requerimiento.etapaProyecto}" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="tipo" value="Tipo" />
+                        <p:selectOneMenu id="tipo" value="#{requerimientoBean.requerimiento.tipo}">
+                            <f:selectItem itemLabel="Materiales" itemValue="Materiales" />
+                            <f:selectItem itemLabel="Servicio" itemValue="Servicio" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="observacion" value="Observación" />
+                        <p:inputTextarea id="observacion" value="#{requerimientoBean.requerimiento.observacion}" />
+                    </div>
+
+                </div>
+
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="Guardar" action="#{requerimientoBean.guardar}" update="form"
+                            icon="pi pi-save" />
+                        <p:button value="Cancelar" outcome="index" icon="pi pi-times" styleClass="ui-button-secondary" />
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

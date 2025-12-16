@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Diagnóstico de Conexión</title>
+</h:head>
+<h:body>
+    <div style="padding: 2rem;">
+        <h1>Diagnóstico del Sistema</h1>
+
+        <p:panel header="Pruebas de Conectividad">
+            <h3>1. Driver MySQL</h3>
+            <h:outputText value="#{debugBean.driverStatus}"
+                style="font-weight: bold; color: #{debugBean.driverStatus.startsWith('OK') ? 'green' : 'red'}" />
+
+            <h3>2. Conexión Directa JDBC</h3>
+            <h:outputText value="#{debugBean.dbStatus}"
+                style="font-weight: bold; color: #{debugBean.dbStatus.startsWith('OK') ? 'green' : 'red'}" />
+
+            <h3>3. Inicialización JPA</h3>
+            <h:outputText value="#{debugBean.jpaStatus}"
+                style="font-weight: bold; color: #{debugBean.jpaStatus.startsWith('OK') ? 'green' : 'red'}" />
+        </p:panel>
+
+        <br />
+        <h:link outcome="/index.xhtml" value="Volver al Inicio" />
+    </div>
+</h:body>
+
+</html>

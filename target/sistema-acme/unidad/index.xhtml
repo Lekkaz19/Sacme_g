@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="title">Gestión de Unidades</ui:define>
+
+    <ui:define name="content">
+        <p:growl id="messages" showDetail="true" />
+
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Nueva Unidad" icon="pi pi-plus" actionListener="#{unidadBean.nuevo}"
+                    update=":main-content-form:manage-unidad-content" oncomplete="PF('manageUnidadDialog').show()"
+                    styleClass="ui-button-success" style="margin-right: .5rem">
+                    <p:resetInput target=":main-content-form:manage-unidad-content" />
+                </p:commandButton>
+            </p:toolbarGroup>
+        </p:toolbar>
+
+        <p:dataTable id="dt-unidades" widgetVar="dtUnidades" var="unidad" value="#{unidadBean.unidades}"
+            reflow="true" styleClass="products-table" paginator="true" rows="10" paginatorPosition="bottom">
+
+            <p:column headerText="Abreviatura" sortBy="#{unidad.abreviatura}" filterBy="#{unidad.abreviatura}">
+                <h:outputText value="#{unidad.abreviatura}" />
+            </p:column>
+
+            <p:column headerText="Descripción" sortBy="#{unidad.descripcion}" filterBy="#{unidad.descripcion}">
+                <h:outputText value="#{unidad.descripcion}" />
+            </p:column>
+
+            <p:column headerText="Estado" sortBy="#{unidad.estado}">
+                <h:outputText value="#{unidad.estado}" />
+            </p:column>
+
+            <p:column exportable="false" headerText="Acciones">
+                <p:commandButton icon="pi pi-pencil" update=":main-content-form:manage-unidad-content"
+                    oncomplete="PF('manageUnidadDialog').show()"
+                    styleClass="edit-button rounded-button ui-button-success" process="@this"
+                    actionListener="#{unidadBean.editar(unidad)}">
+                    <p:resetInput target=":main-content-form:manage-unidad-content" />
+                </p:commandButton>
+                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                    oncomplete="PF('deleteUnidadDialog').show()">
+                    <f:setPropertyActionListener value="#{unidad}" target="#{unidadBean.selectedUnidad}" />
+                </p:commandButton>
+            </p:column>
+
+        </p:dataTable>
+
+        <p:dialog id="manage-unidad-content" header="Detalle de Unidad" showEffect="fade" modal="true" widgetVar="manageUnidadDialog"
+            responsive="true">
+            <ui:include src="form.xhtml" />
+            <f:facet name="footer">
+                <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{unidadBean.guardar}"
+                    update="manage-unidad-content :main-content-form:dt-unidades" process="manage-unidad-content @this" />
+                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageUnidadDialog').hide()"
+                    class="ui-button-secondary" type="button" />
+            </f:facet>
+        </p:dialog>
+
+        <p:confirmDialog widgetVar="deleteUnidadDialog" showEffect="fade" width="300"
+            message="¿Eliminar esta unidad?" header="Confirmar" severity="warn">
+            <p:commandButton value="Sí" icon="pi pi-check"
+                actionListener="#{unidadBean.eliminar(unidadBean.selectedUnidad)}" process="@this"
+                oncomplete="PF('deleteUnidadDialog').hide()" update=":main-content-form:dt-unidades :main-content-form:messages" />
+            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                onclick="PF('deleteUnidadDialog').hide()" />
+        </p:confirmDialog>
+    </ui:define>
+
+</ui:composition>

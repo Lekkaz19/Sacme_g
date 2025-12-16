@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:p="http://primefaces.org/ui">
+
+    <p:outputPanel id="manage-grupo-content" class="ui-fluid">
+        <p:outputPanel rendered="#{not empty grupoBean.selectedGrupo}">
+            <div class="field">
+                <p:outputLabel for="codgrupo">Código Grupo</p:outputLabel>
+                <p:inputText id="codgrupo" value="#{grupoBean.selectedGrupo.codgrupo}" required="true" maxlength="3"
+                    disabled="#{grupoBean.selectedGrupo.id != null}" />
+                <!-- Code usually disabled on edit if it's ID-like, but user may want to edit if unique. 
+                     Service check handles uniqueness. -->
+            </div>
+            <div class="field">
+                <p:outputLabel for="nombre">Nombre</p:outputLabel>
+                <p:inputText id="nombre" value="#{grupoBean.selectedGrupo.nombre}" required="true" />
+            </div>
+            <div class="field">
+                <p:outputLabel for="estado">Estado</p:outputLabel>
+                <p:selectOneRadio id="estado" value="#{grupoBean.selectedGrupo.estado}" layout="responsive" columns="2">
+                    <f:selectItems value="#{grupoBean.selectedGrupo.estado.declaringClass.enumConstants}" var="e"
+                        itemLabel="#{e}" itemValue="#{e}" />
+                </p:selectOneRadio>
+            </div>
+        </p:outputPanel>
+    </p:outputPanel>
+
+</ui:composition>

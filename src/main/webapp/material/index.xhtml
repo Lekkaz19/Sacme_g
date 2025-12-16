@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="title">Gestión de Materiales</ui:define>
+
+    <ui:define name="content">
+        <p:growl id="messages" showDetail="true" />
+
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Nuevo Material" icon="pi pi-plus" actionListener="#{materialBean.nuevo}"
+                    update=":main-content-form:manage-material-content" oncomplete="PF('manageMaterialDialog').show()"
+                    styleClass="ui-button-success" style="margin-right: .5rem">
+                    <p:resetInput target=":main-content-form:manage-material-content" />
+                </p:commandButton>
+            </p:toolbarGroup>
+
+            <p:toolbarGroup align="right">
+                <p:inputText placeholder="Buscar por Nombre" value="#{materialBean.filterNombre}"
+                    style="margin-right:0.5rem">
+                    <p:ajax event="keyup" listener="#{materialBean.filtrar}" update="dt-materiales" delay="500" />
+                </p:inputText>
+            </p:toolbarGroup>
+        </p:toolbar>
+
+        <p:dataTable id="dt-materiales" widgetVar="dtMateriales" var="material" value="#{materialBean.materiales}"
+            reflow="true" styleClass="products-table" paginator="true" rows="10" paginatorPosition="bottom">
+
+            <p:column headerText="Nombre" sortBy="#{material.nombre}" filterBy="#{material.nombre}">
+                <h:outputText value="#{material.nombre}" />
+            </p:column>
+
+            <p:column headerText="Grupo" sortBy="#{material.grupo.nombre}" filterBy="#{material.grupo.nombre}">
+                <h:outputText value="#{material.grupo.nombre}" />
+            </p:column>
+
+            <p:column headerText="Unidad" sortBy="#{material.unidad.abreviatura}"
+                filterBy="#{material.unidad.abreviatura}">
+                <h:outputText value="#{material.unidad.abreviatura}" />
+            </p:column>
+
+            <p:column exportable="false" headerText="Acciones">
+                <p:commandButton icon="pi pi-pencil" update=":main-content-form:manage-material-content"
+                    oncomplete="PF('manageMaterialDialog').show()"
+                    styleClass="edit-button rounded-button ui-button-success" process="@this"
+                    actionListener="#{materialBean.editar(material)}">
+                    <p:resetInput target=":main-content-form:manage-material-content" />
+                </p:commandButton>
+                <p:commandButton icon="pi pi-search" update=":main-content-form:view-material-content"
+                    oncomplete="PF('viewMaterialDialog').show()" styleClass="rounded-button ui-button-success"
+                    process="@this" actionListener="#{materialBean.ver(material)}" style="margin-left: 0.5rem" />
+
+                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                    oncomplete="PF('deleteMaterialDialog').show()" style="margin-left: 0.5rem">
+                    <f:setPropertyActionListener value="#{material}" target="#{materialBean.selectedMaterial}" />
+                </p:commandButton>
+            </p:column>
+
+        </p:dataTable>
+
+        <p:dialog id="manage-material-content" header="Detalle de Material" showEffect="fade" modal="true" widgetVar="manageMaterialDialog"
+            responsive="true">
+            <ui:include src="form.xhtml" />
+            <f:facet name="footer">
+                <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{materialBean.guardar}"
+                    update="manage-material-content :main-content-form:dt-materiales" process="manage-material-content @this" />
+                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageMaterialDialog').hide()"
+                    class="ui-button-secondary" type="button" />
+            </f:facet>
+        </p:dialog>
+
+        <p:dialog header="Ver Material" showEffect="fade" modal="true" widgetVar="viewMaterialDialog"
+            responsive="true">
+            <p:outputPanel id="view-material-content" class="ui-fluid">
+                <p:outputPanel rendered="#{not empty materialBean.selectedMaterial}">
+                    <div class="field">
+                        <label>Código:</label> #{materialBean.selectedMaterial.codigoCompleto}
+                    </div>
+                    <div class="field">
+                        <label>Nombre:</label> #{materialBean.selectedMaterial.nombre}
+                    </div>
+                    <div class="field">
+                        <label>Grupo:</label> #{materialBean.selectedMaterial.grupo.nombre}
+                    </div>
+                    <div class="field">
+                        <label>Unidad:</label> #{materialBean.selectedMaterial.unidad.descripcion}
+                    </div>
+                </p:outputPanel>
+            </p:outputPanel>
+        </p:dialog>
+
+        <p:confirmDialog widgetVar="deleteMaterialDialog" showEffect="fade" width="300"
+            message="¿Eliminar este material?" header="Confirmar" severity="warn">
+            <p:commandButton value="Sí" icon="pi pi-check"
+                actionListener="#{materialBean.eliminar(materialBean.selectedMaterial)}" process="@this"
+                oncomplete="PF('deleteMaterialDialog').hide()" update=":main-content-form:dt-materiales :main-content-form:messages" />
+            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                onclick="PF('deleteMaterialDialog').hide()" />
+        </p:confirmDialog>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,73 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">Requerimientos</ui:define>
+
+    <ui:define name="content">
+        <p:panel header="Lista de Requerimientos">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:button value="Nuevo Requerimiento" outcome="form" icon="pi pi-plus" />
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dataTable id="dt-requerimientos" var="requerimiento" value="#{requerimientoBean.requerimientos}" rows="10" paginator="true"
+                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                rowsPerPageTemplate="5,10,15">
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{requerimiento.id}" />
+                </p:column>
+
+                <p:column headerText="Fecha de Pedido">
+                    <h:outputText value="#{requerimiento.fechaPedido}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Solicitante">
+                    <h:outputText value="#{requerimiento.solicitante.nombre}" />
+                </p:column>
+
+                <p:column headerText="Proyecto">
+                    <h:outputText value="#{requerimiento.proyecto.nombre}" />
+                </p:column>
+
+                <p:column headerText="Tipo">
+                    <h:outputText value="#{requerimiento.tipo}" />
+                </p:column>
+
+                <p:column headerText="Estado">
+                    <h:outputText value="#{requerimiento.estado}" />
+                </p:column>
+
+                <p:column>
+                    <p:button outcome="form" icon="pi pi-pencil" title="Editar" rendered="#{requerimientoBean.puedeEditar(requerimiento)}">
+                        <f:param name="id" value="#{requerimiento.id}" />
+                    </p:button>
+                    <p:commandButton icon="pi pi-check" title="Aprobar" actionListener="#{requerimientoBean.seleccionarRequerimiento(requerimiento)}" 
+                                     update=":main-content-form:dt-requerimientos" action="#{requerimientoBean.aprobar}" rendered="#{requerimientoBean.puedeAprobarRechazar(requerimiento)}" />
+                    <p:commandButton icon="pi pi-times" title="Rechazar" actionListener="#{requerimientoBean.seleccionarRequerimiento(requerimiento)}"
+                                     update=":main-content-form:dt-requerimientos" action="#{requerimientoBean.rechazar}" rendered="#{requerimientoBean.puedeAprobarRechazar(requerimiento)}" />
+                    <p:commandButton icon="pi pi-trash" title="Anular" oncomplete="PF('deleteDialog').show()"
+                        actionListener="#{requerimientoBean.seleccionarRequerimiento(requerimiento)}" 
+                        update=":main-content-form:deleteDialog" rendered="#{requerimientoBean.puedeEditar(requerimiento)}" />
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+
+        <p:dialog id="deleteDialog" header="Confirmar Anulación" widgetVar="deleteDialog" modal="true"
+            width="300">
+            <p:outputPanel id="deletePanel" style="text-align:center; padding:1rem;">
+                <p>¿Está seguro de que desea anular el requerimiento?</p>
+                <p:commandButton value="Sí" action="#{requerimientoBean.anular}" update=":main-content-form:dt-requerimientos"
+                    oncomplete="PF('deleteDialog').hide()" />
+                <p:commandButton value="No" oncomplete="PF('deleteDialog').hide()" />
+            </p:outputPanel>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

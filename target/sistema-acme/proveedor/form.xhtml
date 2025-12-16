@@ -1,0 +1,72 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">#{empty proveedorBean.proveedor.id ? 'Nuevo Proveedor' : 'Editar Proveedor'}</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:panel header="#{empty proveedorBean.proveedor.id ? 'Nuevo Proveedor' : 'Editar Proveedor'}">
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate />
+                </p:messages>
+
+                <div class="p-fluid">
+                    <div class="p-field">
+                        <p:outputLabel for="razonSocial" value="Razón Social" />
+                        <p:inputText id="razonSocial" value="#{proveedorBean.proveedor.razonSocial}" required="true" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="ruc" value="RUC" />
+                        <p:inputText id="ruc" value="#{proveedorBean.proveedor.ruc}" required="true" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="direccion" value="Dirección" />
+                        <p:inputText id="direccion" value="#{proveedorBean.proveedor.direccion}" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="telefono" value="Teléfono" />
+                        <p:inputText id="telefono" value="#{proveedorBean.proveedor.telefono}" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="contacto" value="Contacto" />
+                        <p:inputText id="contacto" value="#{proveedorBean.proveedor.contacto}" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="correo" value="Correo" />
+                        <p:inputText id="correo" value="#{proveedorBean.proveedor.correo}" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="cuentaBancaria" value="Cuenta Bancaria" />
+                        <p:inputText id="cuentaBancaria" value="#{proveedorBean.proveedor.cuentaBancaria}" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="estado" value="Estado" />
+                        <p:selectOneMenu id="estado" value="#{proveedorBean.proveedor.estado}">
+                            <f:selectItem itemLabel="Activo" itemValue="Activo" />
+                            <f:selectItem itemLabel="Inactivo" itemValue="Inactivo" />
+                        </p:selectOneMenu>
+                    </div>
+                </div>
+
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="Guardar" action="#{proveedorBean.guardar}" update="form"
+                            icon="pi pi-save" />
+                        <p:button value="Cancelar" outcome="index" icon="pi pi-times" styleClass="ui-button-secondary" />
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

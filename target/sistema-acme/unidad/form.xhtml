@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:p="http://primefaces.org/ui">
+
+    <p:outputPanel id="manage-unidad-content" class="ui-fluid">
+        <p:outputPanel rendered="#{not empty unidadBean.selectedUnidad}">
+            <div class="field">
+                <p:outputLabel for="abreviatura">Abreviatura</p:outputLabel>
+                <p:inputText id="abreviatura" value="#{unidadBean.selectedUnidad.abreviatura}" required="true"
+                    maxlength="10" disabled="#{unidadBean.selectedUnidad.id != null}" />
+            </div>
+            <div class="field">
+                <p:outputLabel for="descripcion">Descripción</p:outputLabel>
+                <p:inputText id="descripcion" value="#{unidadBean.selectedUnidad.descripcion}" />
+            </div>
+            <div class="field">
+                <p:outputLabel for="estado">Estado</p:outputLabel>
+                <p:selectOneRadio id="estado" value="#{unidadBean.selectedUnidad.estado}" layout="responsive"
+                    columns="2">
+                    <f:selectItems value="#{unidadBean.selectedUnidad.estado.declaringClass.enumConstants}" var="e"
+                        itemLabel="#{e}" itemValue="#{e}" />
+                </p:selectOneRadio>
+            </div>
+        </p:outputPanel>
+    </p:outputPanel>
+
+</ui:composition>

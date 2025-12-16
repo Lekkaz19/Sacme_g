@@ -1,0 +1,82 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">#{empty ordenCompraBean.ordenCompra.id ? 'Nueva Orden de Compra' : 'Editar Orden de Compra'}</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:panel header="#{empty ordenCompraBean.ordenCompra.id ? 'Nueva Orden de Compra' : 'Editar Orden de Compra'}">
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate />
+                </p:messages>
+
+                <div class="p-fluid">
+                    <div class="p-field">
+                        <p:outputLabel for="numeroOrden" value="Número de Orden" />
+                        <p:inputText id="numeroOrden" value="#{ordenCompraBean.ordenCompra.numeroOrden}" required="true" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="fecha" value="Fecha" />
+                        <p:datePicker id="fecha" value="#{ordenCompraBean.ordenCompra.fecha}" required="true" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="proveedor" value="Proveedor" />
+                        <p:selectOneMenu id="proveedor" value="#{ordenCompraBean.ordenCompra.proveedor}" converter="proveedorConverter" required="true">
+                            <f:selectItems value="#{ordenCompraBean.proveedores}" var="proveedor" itemLabel="#{proveedor.razonSocial}" itemValue="#{proveedor}" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="tipoMoneda" value="Tipo de Moneda" />
+                        <p:selectOneMenu id="tipoMoneda" value="#{ordenCompraBean.ordenCompra.tipoMoneda}">
+                            <f:selectItem itemLabel="Soles" itemValue="Soles" />
+                            <f:selectItem itemLabel="Dólares" itemValue="Dolares" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="tipoPago" value="Tipo de Pago" />
+                        <p:selectOneMenu id="tipoPago" value="#{ordenCompraBean.ordenCompra.tipoPago}">
+                            <f:selectItem itemLabel="Cheque" itemValue="Cheque" />
+                            <f:selectItem itemLabel="Efectivo" itemValue="Efectivo" />
+                            <f:selectItem itemLabel="Transferencia" itemValue="Transferencia" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="formaPago" value="Forma de Pago" />
+                        <p:selectOneMenu id="formaPago" value="#{ordenCompraBean.ordenCompra.formaPago}">
+                            <f:selectItem itemLabel="Contado" itemValue="Contado" />
+                            <f:selectItem itemLabel="Contra entrega" itemValue="Contra entrega" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="fechaEntrega" value="Fecha de Entrega Prevista" />
+                        <p:datePicker id="fechaEntrega" value="#{ordenCompraBean.ordenCompra.fechaEntregaPrevista}" />
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel for="lugarEntrega" value="Lugar de Entrega" />
+                        <p:inputText id="lugarEntrega" value="#{ordenCompraBean.ordenCompra.lugarEntrega}" />
+                    </div>
+
+                </div>
+
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="Guardar" action="#{ordenCompraBean.guardar}" update="form"
+                            icon="pi pi-save" />
+                        <p:button value="Cancelar" outcome="index" icon="pi pi-times" styleClass="ui-button-secondary" />
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

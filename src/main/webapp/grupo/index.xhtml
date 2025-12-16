@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="title">Gestión de Grupos</ui:define>
+
+    <ui:define name="content">
+        
+        <p:growl id="messages" showDetail="true" />
+
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Nuevo Grupo" icon="pi pi-plus" actionListener="#{grupoBean.nuevo}"
+                    update=":main-content-form:manage-grupo-content" oncomplete="PF('manageGrupoDialog').show()"
+                    styleClass="ui-button-success" style="margin-right: .5rem">
+                    <p:resetInput target=":main-content-form:manage-grupo-content" />
+                </p:commandButton>
+            </p:toolbarGroup>
+        </p:toolbar>
+
+        <p:dataTable id="dt-grupos" widgetVar="dtGrupos" var="grupo" value="#{grupoBean.grupos}" reflow="true"
+            styleClass="products-table" paginator="true" rows="10" paginatorPosition="bottom">
+
+            <p:column headerText="Código" sortBy="#{grupo.codgrupo}" filterBy="#{grupo.codgrupo}">
+                <h:outputText value="#{grupo.codgrupo}" />
+            </p:column>
+
+            <p:column headerText="Nombre" sortBy="#{grupo.nombre}" filterBy="#{grupo.nombre}">
+                <h:outputText value="#{grupo.nombre}" />
+            </p:column>
+
+            <p:column headerText="Estado" sortBy="#{grupo.estado}">
+                <h:outputText value="#{grupo.estado}" />
+            </p:column>
+
+            <p:column exportable="false" headerText="Acciones">
+                <p:commandButton icon="pi pi-pencil" update=":main-content-form:manage-grupo-content"
+                    oncomplete="PF('manageGrupoDialog').show()"
+                    styleClass="edit-button rounded-button ui-button-success" process="@this"
+                    actionListener="#{grupoBean.editar(grupo)}">
+                    <p:resetInput target=":main-content-form:manage-grupo-content" />
+                </p:commandButton>
+                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                    oncomplete="PF('deleteGrupoDialog').show()">
+                    <f:setPropertyActionListener value="#{grupo}" target="#{grupoBean.selectedGrupo}" />
+                </p:commandButton>
+            </p:column>
+
+        </p:dataTable>
+
+        <p:dialog id="manage-grupo-content" header="Detalle de Grupo" showEffect="fade" modal="true" widgetVar="manageGrupoDialog"
+            responsive="true">
+            <ui:include src="form.xhtml" />
+            <f:facet name="footer">
+                <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{grupoBean.guardar}"
+                    update="manage-grupo-content :main-content-form:dt-grupos" process="manage-grupo-content @this" />
+                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageGrupoDialog').hide()"
+                    class="ui-button-secondary" type="button" />
+            </f:facet>
+        </p:dialog>
+
+        <p:confirmDialog widgetVar="deleteGrupoDialog" showEffect="fade" width="300" message="¿Eliminar este grupo?"
+            header="Confirmar" severity="warn">
+            <p:commandButton value="Sí" icon="pi pi-check"
+                actionListener="#{grupoBean.eliminar(grupoBean.selectedGrupo)}" process="@this"
+                oncomplete="PF('deleteGrupoDialog').hide()" update=":main-content-form:dt-grupos :main-content-form:messages" />
+            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                onclick="PF('deleteGrupoDialog').hide()" />
+        </p:confirmDialog>
+        
+    </ui:define>
+
+</ui:composition>

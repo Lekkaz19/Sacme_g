@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>
+        <ui:insert name="title">Sistema Acme</ui:insert>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        :root {
+            --primary-color: #2c5eff;
+            --primary-dark-color: #1a4cd8;
+            --text-color: #333333;
+            --text-secondary-color: #777777;
+            --background-color: #f7f9fc;
+            --surface-color: #ffffff;
+            --border-color: #e0e0e0;
+            --header-height: 65px;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .layout-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .layout-header {
+            background: var(--surface-color);
+            color: var(--text-color);
+            padding: 0 2rem;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .layout-header .logo {
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: var(--primary-dark-color);
+        }
+
+        .layout-content {
+            flex-grow: 1;
+            padding: 2.5rem;
+            overflow-y: auto;
+        }
+        
+        .layout-footer {
+            text-align: center;
+            padding: 1.2rem;
+            background-color: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            flex-shrink: 0;
+            font-size: 0.9em;
+            color: var(--text-secondary-color);
+        }
+        
+        /* --- PrimeFaces Menubar Override --- */
+        .layout-header .ui-menubar {
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+        .layout-header .ui-menuitem-link {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .layout-header .ui-menu-list {
+            padding: 0;
+        }
+
+        /* General Content Styles */
+        .layout-content .ui-panel {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: none;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="layout-container">
+        
+        <header class="layout-header">
+            <h:outputText value="Sistema Acme" styleClass="logo" />
+            
+            <p:menubar>
+                <p:submenu label="Dashboard" icon="pi pi-home">
+                    <p:menuitem value="Inicio" url="#{request.contextPath}/index.xhtml" />
+                </p:submenu>
+                <p:submenu label="Gestión" icon="pi pi-briefcase">
+                    <p:menuitem value="Grupos" url="#{request.contextPath}/grupo/index.xhtml" />
+                    <p:menuitem value="Unidades" url="#{request.contextPath}/unidad/index.xhtml" />
+                    <p:menuitem value="Materiales" url="#{request.contextPath}/material/index.xhtml" />
+                    <p:menuitem value="Proyectos" url="#{request.contextPath}/proyecto/index.xhtml" />
+                    <p:menuitem value="Proveedores" url="#{request.contextPath}/proveedor/index.xhtml" />
+                </p:submenu>
+                <p:submenu label="Operaciones" icon="pi pi-cog">
+                    <p:menuitem value="Requerimientos" url="#{request.contextPath}/requerimiento/index.xhtml" />
+                    <p:menuitem value="Órdenes de Compra" url="#{request.contextPath}/ordencompra/index.xhtml" />
+                    <p:menuitem value="Registro de Compras" url="#{request.contextPath}/registrocompra/index.xhtml" />
+                </p:submenu>
+            </p:menubar>
+        </header>
+
+        <main class="layout-content">
+            <h:form id="main-content-form">
+                <ui:insert name="content">
+                    Bienvenido al Sistema Acme.
+                </ui:insert>
+            </h:form>
+        </main>
+            
+        <footer class="layout-footer">
+             <h:outputText value="© 2025 Acme Inc. Todos los derechos reservados." />
+        </footer>
+    </div>
+
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat" />
+        <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" />
+    </p:confirmDialog>
+</h:body>
+
+</html>

@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:p="http://primefaces.org/ui">
+
+    <p:outputPanel id="manage-material-content" class="ui-fluid">
+        <p:outputPanel rendered="#{not empty materialBean.selectedMaterial}">
+            <div class="field">
+                <p:outputLabel for="codcorrelativo">Código Correlativo</p:outputLabel>
+                <p:inputText id="codcorrelativo" value="#{materialBean.selectedMaterial.codcorrelativo}" required="true"
+                    maxlength="3" />
+                <small class="block">Código único de 3 caracteres.</small>
+            </div>
+
+            <div class="field">
+                <p:outputLabel for="nombre">Nombre</p:outputLabel>
+                <p:inputText id="nombre" value="#{materialBean.selectedMaterial.nombre}" required="true" />
+            </div>
+
+            <div class="field">
+                <p:outputLabel for="grupo">Grupo</p:outputLabel>
+                <p:selectOneMenu id="grupo" value="#{materialBean.selectedMaterial.grupo}" converter="#{grupoConverter}"
+                    required="true">
+                    <f:selectItem itemLabel="Seleccione Uno" itemValue="" />
+                    <f:selectItems value="#{materialBean.grupos}" var="g" itemLabel="#{g.nombre}" itemValue="#{g}" />
+                    <p:ajax event="change" listener="#{materialBean.onGrupoChange}" update="@form" />
+                    <!-- Assuming this fragment is inside a form in parent -->
+                </p:selectOneMenu>
+            </div>
+
+            <div class="field">
+                <p:outputLabel for="unidad">Unidad</p:outputLabel>
+                <p:selectOneMenu id="unidad" value="#{materialBean.selectedMaterial.unidad}"
+                    converter="#{unidadConverter}" required="true">
+                    <f:selectItem itemLabel="Seleccione Uno" itemValue="" />
+                    <f:selectItems value="#{materialBean.unidades}" var="u" itemLabel="#{u.abreviatura}"
+                        itemValue="#{u}" />
+                </p:selectOneMenu>
+            </div>
+
+            <div class="field">
+                <p:outputLabel for="fechaCreacion">Fecha de Creación</p:outputLabel>
+                <p:datePicker id="fechaCreacion" value="#{materialBean.selectedMaterial.fechaCreacion}" showIcon="true"
+                    required="true" />
+            </div>
+
+            <div class="field">
+                <p:outputLabel for="descripcion">Descripción</p:outputLabel>
+                <p:inputTextarea id="descripcion" value="#{materialBean.selectedMaterial.descripcion}" rows="3" />
+            </div>
+
+            <div class="field">
+                <p:outputLabel for="observacion">Observación</p:outputLabel>
+                <p:inputTextarea id="observacion" value="#{materialBean.selectedMaterial.observacion}" rows="3" />
+            </div>
+
+            <div class="field">
+                <p:outputLabel for="estado">Estado</p:outputLabel>
+                <p:selectOneRadio id="estado" value="#{materialBean.selectedMaterial.estado}" layout="responsive"
+                    columns="2">
+                    <f:selectItems value="#{materialBean.selectedMaterial.estado.declaringClass.enumConstants}" var="e"
+                        itemLabel="#{e}" itemValue="#{e}" />
+                </p:selectOneRadio>
+            </div>
+        </p:outputPanel>
+    </p:outputPanel>
+
+</ui:composition>

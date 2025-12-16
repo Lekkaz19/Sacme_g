@@ -1,0 +1,44 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="jakarta.faces.html"
+    xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="title">Registro de Compras</ui:define>
+
+    <ui:define name="content">
+        <p:panel header="Registro de Compras">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:button value="Nuevo Registro" outcome="form" icon="pi pi-plus" />
+                </p:toolbarGroup>
+            </p:toolbar>
+            
+            <p:dataTable id="dt-registros" var="registro" value="#{registroCompraBean.registros}" rows="10" paginator="true"
+                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                rowsPerPageTemplate="5,10,15">
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{registro.id}" />
+                </p:column>
+
+                <p:column headerText="Orden de Compra">
+                    <h:outputText value="#{registro.ordenCompra.numeroOrden}" />
+                </p:column>
+
+                <p:column headerText="Material">
+                    <h:outputText value="#{registro.material.nombre}" />
+                </p:column>
+
+                <p:column headerText="Cantidad">
+                    <h:outputText value="#{registro.cantidad}" />
+                </p:column>
+
+                <p:column headerText="Requerimiento">
+                    <h:outputText value="#{registro.requerimiento.id}" />
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+    </ui:define>
+</ui:composition>
