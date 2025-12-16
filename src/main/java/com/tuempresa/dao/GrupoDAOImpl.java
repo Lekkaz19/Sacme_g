@@ -1,9 +1,11 @@
 package com.tuempresa.dao;
 
 import com.tuempresa.model.Grupo;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
+@ApplicationScoped
 public class GrupoDAOImpl extends GenericDAOImpl<Grupo, Integer> implements GrupoDAO {
 
     public GrupoDAOImpl() {
@@ -13,7 +15,7 @@ public class GrupoDAOImpl extends GenericDAOImpl<Grupo, Integer> implements Grup
     @Override
     public Grupo findByCodgrupo(String codgrupo) {
         try {
-            TypedQuery<Grupo> q = getEntityManager().createQuery("SELECT g FROM Grupo g WHERE g.codgrupo = :codgrupo",
+            TypedQuery<Grupo> q = this.em.createQuery("SELECT g FROM Grupo g WHERE g.codgrupo = :codgrupo",
                     Grupo.class);
             q.setParameter("codgrupo", codgrupo);
             return q.getSingleResult();
