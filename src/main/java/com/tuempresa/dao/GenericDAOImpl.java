@@ -20,11 +20,6 @@ public abstract class GenericDAOImpl<T, ID> implements GenericDAO<T, ID> {
     public GenericDAOImpl() {
     }
 
-    // ⭐ AGREGAR ESTE MÉTODO ⭐
-    protected EntityManager getEntityManager() {
-        return this.em;
-    }
-
     @Override
     public T create(T t) {
         this.em.persist(t);
