@@ -4,20 +4,20 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
 
     <persistence-unit name="bdipa" transaction-type="RESOURCE_LOCAL">
-        <!-- <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source> -->
         <properties>
-            <!-- Jakarta Persistence Properties for H2 -->
-            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:db_inventario;DB_CLOSE_DELAY=-1;MODE=MySQL"/>
-            <property name="jakarta.persistence.jdbc.user" value="sa"/>
-            <property name="jakarta.persistence.jdbc.password" value=""/>
+            <!-- MySQL Configuration -->
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db_inventario?useSSL=false&amp;serverTimezone=America/Lima"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="root"/>
 
-            <!-- Tell WildFly to NOT manage this PU, preventing deployment errors -->
+            <!-- Tell WildFly/Payara to NOT manage this PU -->
             <property name="jboss.as.jpa.managed" value="false"/>
 
-            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
-            <property name="hibernate.hbm2ddl.import_files" value="/import.sql"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <!-- NO drop-and-create, usar la BD existente -->
+            <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
+            
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
         </properties>
